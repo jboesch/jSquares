@@ -1,0 +1,74 @@
+#js-container,
+#js-container-2 {
+	width:729px;
+	margin:30px auto; 
+	font-family:Arial;
+	position:relative;
+	height:300px;
+}
+.js-image {
+	background:#000;
+	font-size:1em;
+	overflow:hidden;
+	position:absolute;
+	z-index:1;
+	text-align:left;
+}
+.js-image,
+.js-image img,
+.js-image.size-3,
+.js-image.size-3 img,
+.js-overlay-image {
+	width:222px;
+	height:154px;
+}
+.js-image.size-2,
+.js-image.size-2 img {
+	width:110px;
+	height:76px;
+	font-size:.6em;
+}
+.js-image.size-1,
+.js-image.size-1 img {
+	width:54px;
+	height:37px;
+	font-size:.3em;
+}
+.js-small-caption {
+	position:absolute;
+	bottom:0;
+	left:0;
+	background:#000;
+	width:94%;
+	padding:3%;
+	height:auto;
+}
+.js-small-caption {
+	opacity:.8;
+}
+.js-caption-overlay {
+	background:#eee;
+	z-index:998;
+	padding:12px;
+	position:absolute;
+	overflow:hidden;
+}
+.js-small-caption span {
+	color:#fff;
+}
+.js-overlay-image {
+	float:left;
+}
+.js-overlay-html {
+	float:left;
+	padding:0 0 0 15px;
+	width:180px;
+}
+.js-overlay-html h4 {
+	margin:0;
+	padding:0 0 10px 0;
+}
+.js-overlay-html p {
+	font-size:.75em;
+	margin:0;
+}
