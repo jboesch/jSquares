@@ -71,7 +71,7 @@
 		?>
 		
 			<div class="js-image size-<?= $box['size']; ?>" style="top:<?= $box['top']; ?>px;left:<?= $box['left']; ?>px;">		
-				<img class="js-small-image" src="images/wolf-moon.jpg"/>
+				<a href="#wolf!"><img class="js-small-image" src="images/wolf-moon.jpg"/></a>
 				<div class="js-small-caption">
 					<span>Howlla at cha boy!</span>
 				</div>

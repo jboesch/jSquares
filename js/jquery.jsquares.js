@@ -92,14 +92,10 @@
 			
 				var conts = contents;
 				var img = $current_image.find('img');
-				var wrap_a_start = '';
-				var wrap_a_end = '';
-				
-				// if the image is wrapped in an anchor, link the image on the overlay as well!
-				if(a = img.parent().attr('href')){
-					wrap_a_start = '<a href="' + a + '">';
-					wrap_a_end = '</a>';
-				}
+				// if the image is wrapped in an anchor, link the image on the overlay as well
+				var a = img.parent().attr('href') || '';
+				var wrap_a_start = (a != '') ? '<a href="' + a + '">' : '';
+				var wrap_a_end = (a != '') ? '</a>' : '';
 				
 				contents = wrap_a_start + '<img src="' + img.attr('src')  + '" class="js-overlay-image" />' + wrap_a_end;
 				contents += '<div class="js-overlay-html">' + conts + '</div><div style="clear:both"></div>';
