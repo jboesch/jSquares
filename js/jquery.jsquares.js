@@ -1,9 +1,12 @@
 /*
- * jSquares for jQuery v1.0
+ * jSquares for jQuery
  * http://boedesign.com/
  *
  * Copyright (c) 2009 Jordan Boesch
  * Dual licensed under the MIT and GPL licenses.
+ *
+ * Date: October 22, 2009
+ * Version: 1.1
  *
  */
 (function($) {
@@ -12,41 +15,39 @@
 	$.fn.jsquares = function(options){
 		
 		// General
-		var main = this;
-		var image_counter = 0;
-		var dropin_int = 0;
+		var main = this,
+			image_counter = 0,
+			dropin_int = 0,
 		
-		// Set up the default options
-		var defaults = { 
+			// Set up the default options
+			defaults = { 
 		
-			// Public 
-			js_image: '.js-image', // target (div) holding info
-			js_caption: '.js-small-caption', // target caption
-			js_caption_overlay_spacing: 12, // caption overlay padding/spacing... sort of
-			js_caption_width: 400, // caption overlay width
-			js_caption_height:130, // caption overlay height
-			js_fade_to: .3, // fade image/caption to what..
-			js_fade_start: 1, // send image back to...
-			js_fade_speed: 'fast', // int or string: anytime the fade effect is used, how fast should it be
-			js_shuffle_in: true, // have the pictures all fade in on page load?
-			js_shuffle_in_speed: 130, // how long to wait before we fade in the next image on page load
-			js_fade_on_hover: true, // do we want the images to fade on hover or just change opacity?
-			js_caption_slide_down: true, // do we want the caption to slide down or just appear?
-			js_caption_slidedown_speed: 'fast', // how fast to slidedown the caption
-			
-			// Overwrite at your own risk! (more-so private)
-			_fade_selectors_on_hover: 'img, .js-small-caption span',
-			_overlay_selector_class: 'js-caption-overlay'
-			
-		};
+				// Public 
+				js_image: '.js-image', // target (div) holding info
+				js_caption: '.js-small-caption', // target caption
+				js_caption_overlay_spacing: 12, // caption overlay padding/spacing... sort of
+				js_caption_width: 400, // caption overlay width
+				js_caption_height:130, // caption overlay height
+				js_fade_to: .3, // fade image/caption to what..
+				js_fade_start: 1, // send image back to...
+				js_fade_speed: 'fast', // int or string: anytime the fade effect is used, how fast should it be
+				js_shuffle_in: true, // have the pictures all fade in on page load?
+				js_shuffle_in_speed: 130, // how long to wait before we fade in the next image on page load
+				js_fade_on_hover: true, // do we want the images to fade on hover or just change opacity?
+				js_caption_slide_down: true, // do we want the caption to slide down or just appear?
+				js_caption_slidedown_speed: 'fast', // how fast to slidedown the caption
+				
+				// Overwrite at your own risk! (more-so private)
+				_fade_selectors_on_hover: 'img, .js-small-caption span',
+				_overlay_selector_class: 'js-caption-overlay'
+				
+			},
 		
-		// Now overwrite the default options with the ones passed in
-		var options = $.extend(defaults, options);  
-		
-		// Cached vars for later
-		var $js_image = $(options.js_image, main);
-		var $js_image_children = $js_image.find(options._fade_selectors_on_hover);
-		var window_width = $(window).width();
+			// Now overwrite the default options with the ones passed in
+			options = $.extend(defaults, options),
+			$js_image = $(options.js_image, main),
+			$js_image_children = $js_image.find(options._fade_selectors_on_hover),
+			window_width = $(window).width();
 		
 		// Adjust the var is people resize!
 		$(window).resize(function(){
@@ -54,48 +55,45 @@
 		});
 			
 		// Custom functions called on the hover events
-		var revealBinds = function(e, i, evt){
+		function revealBinds(e, i, evt){
+			
 			caption(i);
 			fadeInOutImage('in', options.js_fade_to, i);
+			
 		}
 		
 		// Functions called from the binds
-		var fadeInOutImage = function(in_out, opacity_val, i){
+		function fadeInOutImage(in_out, opacity_val, i){
 			
-			if(in_out == 'in'){
-				var chain = $js_image.not(':eq(' + i + ')').find(options._fade_selectors_on_hover);
-			}
-			else {
-				var chain = $js_image_children;
-			}
+			var chain = (in_out == 'in') ? 
+				$js_image.not(':eq(' + i + ')').find(options._fade_selectors_on_hover) :
+				$js_image_children;
 			
-			if(options.js_fade_on_hover){
-				$(chain).fadeTo(options.js_fade_speed, opacity_val);
-			}
-			else {
-				$(chain).css('opacity', opacity_val)
-			}	
+			(options.js_fade_on_hover) ? 
+				$(chain).fadeTo(options.js_fade_speed, opacity_val) :
+				$(chain).css('opacity', opacity_val);
 		
 		}
 		
 		// Display the caption!
-		var caption = function(index){
+		function caption(index){
 			
 			$('.' + options._overlay_selector_class).remove(); // remove any stray captions
-			var $current_image = $(options.js_image + ':eq(' + index + ')', main);
-			var overlay_sett = getCaptionSettings($current_image);
-			var contents = $current_image.find('.js-overlay-caption-content').html() || '';
-			var caption_options = (options.js_caption_slide_down) ? { display: 'none' } : {};
+			
+			var $current_image = $(options.js_image + ':eq(' + index + ')', main),
+				overlay_sett = getCaptionSettings($current_image),
+				contents = $current_image.find('.js-overlay-caption-content').html() || '',
+				caption_options = (options.js_caption_slide_down) ? { display: 'none' } : {};
 			
 			// wrap it appropriately with an image etc.
 			if(contents){
 			
-				var conts = contents;
-				var img = $current_image.find('img');
-				// if the image is wrapped in an anchor, link the image on the overlay as well
-				var a = img.parent().attr('href') || '';
-				var wrap_a_start = (a != '') ? '<a href="' + a + '">' : '';
-				var wrap_a_end = (a != '') ? '</a>' : '';
+				var conts = contents,
+					img = $current_image.find('img'),
+					// if the image is wrapped in an anchor, link the image on the overlay as well
+					a = img.parent().attr('href') || '',
+					wrap_a_start = (a != '') ? '<a href="' + a + '">' : '',
+					wrap_a_end = (a != '') ? '</a>' : '';
 				
 				contents = wrap_a_start + '<img src="' + img.attr('src')  + '" class="js-overlay-image" />' + wrap_a_end;
 				contents += '<div class="js-overlay-html">' + conts + '</div><div style="clear:both"></div>';
@@ -114,8 +112,7 @@
 			.css(caption_options)
 			.addClass(options._overlay_selector_class)
 			.appendTo('body')
-			.hover(
-				function(){}, 
+			.bind('mouseleave',
 				function(){
 					fadeInOutImage('out', options.js_fade_start)
 					$('#js-overlay-id-' + index).remove();
@@ -129,7 +126,7 @@
 		}
 		
 		// Return an object that contains where the caption should be positioned etc.
-		var getCaptionSettings = function(image){
+		function getCaptionSettings(image){
 			
 			var loc = elementLocation($(image));
 			var loc_x = loc.x - options.js_caption_overlay_spacing;
@@ -151,9 +148,9 @@
 		}
 		
 		// If they chose to have the effect slide down, run it here
-		var setImageTimeoutSlideDown = function(images){
+		function setImageTimeoutSlideDown(images){
 			
-			images = shuffle(images);
+			var images = shuffle(images);
 			
 			dropin_int = setInterval(function(){
 				
@@ -173,7 +170,7 @@
 		}
 		
 		// Get the location of the element on the page
-		var elementLocation = function(obj){
+		function elementLocation(obj){
 		
 			var curleft = 0;
 			var curtop = 0;
@@ -189,9 +186,11 @@
 		}
 		
 		// Give an array a random order
-		var shuffle = function(v){
+		function shuffle(v){
+		    
 		    for(var j, x, i = v.length; i; j = parseInt(Math.random() * i), x = v[--i], v[i] = v[j], v[j] = x);
 		    return v;
+		    
 		};
 		
 		

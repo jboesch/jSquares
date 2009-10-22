@@ -1,8 +1,14 @@
+body {
+	font-family:Verdana;
+	color:#333;
+}
+a {
+	color:#666;
+}
 #js-container,
 #js-container-2 {
 	width:729px;
 	margin:30px auto; 
-	font-family:Arial;
 	position:relative;
 	height:300px;
 }
