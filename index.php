@@ -13,24 +13,15 @@
 	<link rel="stylesheet" href="css/jsquares.css" type="text/css" media="all" />
 	
 	<!-- js -->
-	<script src="js/jquery.jsquares.js" type="text/javascript"></script>
+	<script src="js/jquery.jsquares.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
+
 			$('#js-container').jsquares();
 			$('#js-container-2').jsquares({
-				js_image: '.js-image', // target (div) holding info
-				js_caption: '.js-small-caption', // target caption
-				js_caption_overlay_spacing: 12, // caption overlay padding/spacing... sort of
-				js_caption_width: 400, // caption overlay width
-				js_caption_height:130, // caption overlay height
-				js_fade_to: .3, // fade image/caption to what..
-				js_fade_start: 1, // send image back to...
-				js_fade_speed: 'fast', // int or string: anytime the fade effect is used, how fast should it be
 				js_shuffle_in: false, // have the pictures all fade in on page load?
-				js_shuffle_in_speed: 130, // how long to wait before we fade in the next image on page load
 				js_fade_on_hover: false, // do we want the images to fade on hover or just change opacity?
-				js_caption_slide_down: false, // do we want the caption to slide down or just appear?
-				js_caption_slidedown_speed: 'fast', // how fast to slidedown the caption
+				js_caption_slide_down: false // do we want the caption to slide down or just appear?
 			});
 			
 		});
@@ -62,8 +53,8 @@
 	);
 	?>
 	
-		<h2>Example 1</h2>
-		
+		<h2>Example 1 (default)</h2>
+		<pre>$('#js-container').jsquares();</pre>
 	<div id="js-container">
 	
 		<?
@@ -90,7 +81,12 @@
 	
 	
 	<h2>Example 2</h2>
-	
+	<pre>
+$('#js-container-2').jsquares({
+	js_shuffle_in: false, // have the pictures all fade in on page load?
+	js_fade_on_hover: false, // do we want the images to fade on hover or just change opacity?
+	js_caption_slide_down: false // do we want the caption to slide down or just appear?
+});</pre>
 	<div id="js-container-2">
 	
 		<?
@@ -98,12 +94,12 @@
 		?>
 		
 			<div class="js-image size-<?= $box['size']; ?>" style="top:<?= $box['top']; ?>px;left:<?= $box['left']; ?>px;">		
-				<img class="js-small-image" src="images/wolf-moon.jpg"/>
+				<img class="js-small-image" src="images/sesame-street.jpg"/>
 				<div class="js-small-caption">
-					<span>Howll@ @t ch@ boy!</span>
+					<span>Everyone loves this show</span>
 				</div>
 				<div class="js-overlay-caption-content">
-					<h4>You can't hide from wolf boy 2!</h4>
+					<h4>Sesame Street!</h4>
 					<p>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. In elementum arcu non orci fermentum nec suscipit neque dignissim... <a href="#">Read more &raquo;</a>
 					</p>

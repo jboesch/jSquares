@@ -13,7 +13,7 @@
 	
 	// Set up and extenderize!
 	$.fn.jsquares = function(options){
-		
+
 		// General
 		var main = this,
 			image_counter = 0,
@@ -56,7 +56,6 @@
 			
 		// Custom functions called on the hover events
 		function revealBinds(e, i, evt){
-			
 			caption(i);
 			fadeInOutImage('in', options.js_fade_to, i);
 			
@@ -206,7 +205,7 @@
     		
     		// Add hover action for each image 
     		$js_image.each(function(i){
-    			
+
     			$(this).hoverIntent(
     				function(evt){ revealBinds(this, i, evt); }, 
     				function(evt){  }
@@ -218,6 +217,9 @@
 		
 		
 	};
+	
+	// Just in case someone types jSquares instead of jsquares ;)
+	$.fn.jSquares = $.fn.jsquares;
 	
 })(jQuery);
 
