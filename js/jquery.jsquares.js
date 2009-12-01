@@ -5,14 +5,17 @@
  * Copyright (c) 2009 Jordan Boesch
  * Dual licensed under the MIT and GPL licenses.
  *
- * Date: October 22, 2009
- * Version: 1.1
+ * Date: December 1, 2009
+ * Version: 1.2
  *
  */
 (function($) {
 	
-	// Set up and extenderize!
-	$.fn.jsquares = function(options){
+	/**
+	* Initialize and setup plugin 
+	* @param {Object} options The set of options to pass to over-write the defaults
+	*/
+	$.fn.jsquares = $.fn.jSquares = function(options){
 
 		// General
 		var main = this,
@@ -23,19 +26,19 @@
 			defaults = { 
 		
 				// Public 
-				js_image: '.js-image', // target (div) holding info
-				js_caption: '.js-small-caption', // target caption
-				js_caption_overlay_spacing: 12, // caption overlay padding/spacing... sort of
-				js_caption_width: 400, // caption overlay width
-				js_caption_height:130, // caption overlay height
-				js_fade_to: .3, // fade image/caption to what..
-				js_fade_start: 1, // send image back to...
-				js_fade_speed: 'fast', // int or string: anytime the fade effect is used, how fast should it be
-				js_shuffle_in: true, // have the pictures all fade in on page load?
-				js_shuffle_in_speed: 130, // how long to wait before we fade in the next image on page load
-				js_fade_on_hover: true, // do we want the images to fade on hover or just change opacity?
-				js_caption_slide_down: true, // do we want the caption to slide down or just appear?
-				js_caption_slidedown_speed: 'fast', // how fast to slidedown the caption
+				image: '.js-image', // target (div) holding info
+				caption: '.js-small-caption', // target caption
+				caption_overlay_spacing: 12, // caption overlay padding/spacing... sort of
+				caption_width: 400, // caption overlay width
+				caption_height:130, // caption overlay height
+				fade_to: .3, // fade image/caption to what..
+				fade_start: 1, // send image back to...
+				fade_speed: 'fast', // int or string: anytime the fade effect is used, how fast should it be
+				shuffle_in: true, // have the pictures all fade in on page load?
+				shuffle_in_speed: 130, // how long to wait before we fade in the next image on page load
+				fade_on_hover: true, // do we want the images to fade on hover or just change opacity?
+				caption_slide_down: true, // do we want the caption to slide down or just appear?
+				caption_slidedown_speed: 'fast', // how fast to slidedown the caption
 				
 				// Overwrite at your own risk! (more-so private)
 				_fade_selectors_on_hover: 'img, .js-small-caption span',
@@ -45,8 +48,8 @@
 		
 			// Now overwrite the default options with the ones passed in
 			options = $.extend(defaults, options),
-			$js_image = $(options.js_image, main),
-			$js_image_children = $js_image.find(options._fade_selectors_on_hover),
+			$image = $(options.image, main),
+			$image_children = $image.find(options._fade_selectors_on_hover),
 			window_width = $(window).width();
 		
 		// Adjust the var is people resize!
@@ -54,35 +57,51 @@
 			window_width = $(window).width();
 		});
 			
-		// Custom functions called on the hover events
-		function revealBinds(e, i, evt){
-			caption(i);
-			fadeInOutImage('in', options.js_fade_to, i);
+		/**
+		* Custom functions called on the hover events
+		* @private
+		* @param {Object} e The element that's being revealed
+		* @param {Integer} i The index of that element in the array stack
+		* @param {Object} evt The type of event that's being performed
+		*/
+		function _revealBinds(e, i, evt){
+			_caption(i);
+			_fadeInOutImage('in', options.fade_to, i);
 			
 		}
 		
-		// Functions called from the binds
-		function fadeInOutImage(in_out, opacity_val, i){
+		/**
+		* Determine whether we are fading in or fading out, hide/reveal images
+		* @private
+		* @param {String} in_out If we are fading an element in or we're fading all out
+		* @param {Integer} opacity_val Bring the opacity to a certain value
+		* @param {Integer} i The index of the element in the array stack
+		*/
+		function _fadeInOutImage(in_out, opacity_val, i){
 			
 			var chain = (in_out == 'in') ? 
-				$js_image.not(':eq(' + i + ')').find(options._fade_selectors_on_hover) :
-				$js_image_children;
+				$image.not(':eq(' + i + ')').find(options._fade_selectors_on_hover) :
+				$image_children;
 			
-			(options.js_fade_on_hover) ? 
-				$(chain).fadeTo(options.js_fade_speed, opacity_val) :
+			(options.fade_on_hover) ? 
+				$(chain).fadeTo(options.fade_speed, opacity_val) :
 				$(chain).css('opacity', opacity_val);
 		
 		}
 		
-		// Display the caption!
-		function caption(index){
+		/**
+		* Display the caption
+		* @private
+		* @param {Integer} index The index of the element in the array stack
+		*/
+		function _caption(index){
 			
 			$('.' + options._overlay_selector_class).remove(); // remove any stray captions
 			
-			var $current_image = $(options.js_image + ':eq(' + index + ')', main),
-				overlay_sett = getCaptionSettings($current_image),
+			var $current_image = $(options.image + ':eq(' + index + ')', main),
+				overlay_sett = _getCaptionSettings($current_image),
 				contents = $current_image.find('.js-overlay-caption-content').html() || '',
-				caption_options = (options.js_caption_slide_down) ? { display: 'none' } : {};
+				caption_options = (options.caption_slide_down) ? { display: 'none' } : {};
 			
 			// wrap it appropriately with an image etc.
 			if(contents){
@@ -113,43 +132,51 @@
 			.appendTo('body')
 			.bind('mouseleave',
 				function(){
-					fadeInOutImage('out', options.js_fade_start)
+					_fadeInOutImage('out', options.fade_start)
 					$('#js-overlay-id-' + index).remove();
 				}
 			);
 			
-			if(options.js_caption_slide_down){
-				$('#js-overlay-id-' + index).slideDown(options.js_caption_slidedown_speed)
+			if(options.caption_slide_down){
+				$('#js-overlay-id-' + index).slideDown(options.caption_slidedown_speed)
 			}
 			
 		}
 		
-		// Return an object that contains where the caption should be positioned etc.
-		function getCaptionSettings(image){
+		/**
+		* Determines where the caption should be positioned
+		* @private
+		* @param {Object} image The jQuery element that we need to get dimensions/location for
+		*/
+		function _getCaptionSettings(image){
 			
-			var loc = elementLocation($(image));
-			var loc_x = loc.x - options.js_caption_overlay_spacing;
-			var loc_y = loc.y - options.js_caption_overlay_spacing;
+			var loc = _elementLocation($(image));
+			var loc_x = loc.x - options.caption_overlay_spacing;
+			var loc_y = loc.y - options.caption_overlay_spacing;
 			
-			var img_height = options.js_caption_height + (options.js_caption_overlay_spacing * 2);
-			var img_width = options.js_caption_width + (options.js_caption_overlay_spacing * 2); 
+			var img_height = options.caption_height + (options.caption_overlay_spacing * 2);
+			var img_width = options.caption_width + (options.caption_overlay_spacing * 2); 
 			
-			var check_window_width = loc_x + img_width + (options.js_caption_overlay_spacing * 2);
+			var check_window_width = loc_x + img_width + (options.caption_overlay_spacing * 2);
 			
 			// Do we need to open the overlay in the opposite direction?
 			if(check_window_width >= window_width){
 				var hard_img_width = $(image).outerWidth();
-				loc_x = loc_x - (options.js_caption_width + (options.js_caption_overlay_spacing * 2)) + hard_img_width;
+				loc_x = loc_x - (options.caption_width + (options.caption_overlay_spacing * 2)) + hard_img_width;
 			}
 			
 			return { x: loc_x, y: loc_y, width: img_width, height: img_height }; 
 			
 		}
 		
-		// If they chose to have the effect slide down, run it here
-		function setImageTimeoutSlideDown(images){
+		/**
+		* If they chose to have the effect slide down, run it here
+		* @private
+		* @param {Array} images An array of all images in the stack
+		*/
+		function _setImageTimeoutSlideDown(images){
 			
-			var images = shuffle(images);
+			var images = _shuffle(images);
 			
 			dropin_int = setInterval(function(){
 				
@@ -158,18 +185,22 @@
 					return false;
 				}
 				
-				var $img = $(options.js_image + ':eq(' + images[image_counter] + ')', main)
+				var $img = $(options.image + ':eq(' + images[image_counter] + ')', main)
 				var img_height = $img.height();
-				$img.fadeIn(options.js_fade_speed);
+				$img.fadeIn(options.fade_speed);
 				image_counter++
 				
-			}, options.js_shuffle_in_speed);
+			}, options.shuffle_in_speed);
 			
 			
 		}
 		
-		// Get the location of the element on the page
-		function elementLocation(obj){
+		/**
+		* Calculate the position of the element on the page
+		* @private
+		* @param {Object} obj The jQuery element that we want the position of
+		*/
+		function _elementLocation(obj){
 		
 			var curleft = 0;
 			var curtop = 0;
@@ -184,8 +215,12 @@
 			
 		}
 		
-		// Give an array a random order
-		function shuffle(v){
+		/**
+		* Give an array a random order
+		* @private
+		* @param {Array} v An array of images that we mix and return a random order for when they shuffle in
+		*/
+		function _shuffle(v){
 		    
 		    for(var j, x, i = v.length; i; j = parseInt(Math.random() * i), x = v[--i], v[i] = v[j], v[j] = x);
 		    return v;
@@ -197,29 +232,26 @@
 		return this.each(function() {
 			
 			// Hide all the images off the start and push them into an array
-    		var images = [];
-    		$js_image.each(function(i){ $(this).hide(); images.push(i); });
+			var images = [];
+			$image.each(function(i){ $(this).hide(); images.push(i); });
     		
-    		// Run the effect of sliding down?
-    		(options.js_shuffle_in) ? setImageTimeoutSlideDown(images) : $js_image.show();
+			// Run the effect of sliding down?
+			(options.shuffle_in) ? _setImageTimeoutSlideDown(images) : $image.show();
     		
-    		// Add hover action for each image 
-    		$js_image.each(function(i){
+			// Add hover action for each image 
+			$image.each(function(i){
 
-    			$(this).hoverIntent(
-    				function(evt){ revealBinds(this, i, evt); }, 
-    				function(evt){  }
-    			);
+				$(this).hoverIntent(
+					function(evt){ _revealBinds(this, i, evt); }, 
+					function(evt){  }
+				);
     			
-    		});
+			});
     		
 		});
 		
 		
 	};
-	
-	// Just in case someone types jSquares instead of jsquares ;)
-	$.fn.jSquares = $.fn.jsquares;
 	
 })(jQuery);
 
