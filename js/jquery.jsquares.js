@@ -5,8 +5,8 @@
  * Copyright (c) 2009 Jordan Boesch
  * Dual licensed under the MIT and GPL licenses.
  *
- * Date: December 1, 2009
- * Version: 1.2
+ * Date: May 24, 2011
+ * Version: 1.3
  *
  */
 (function($) {
@@ -84,7 +84,7 @@
 				$image_children;
 			
 			(options.fade_on_hover) ? 
-				$(chain).fadeTo(options.fade_speed, opacity_val) :
+				$(chain).stop(true, false).fadeTo(options.fade_speed, opacity_val) :
 				$(chain).css('opacity', opacity_val);
 		
 		}
@@ -206,10 +206,11 @@
 			var curtop = 0;
 			  
 			do {
-				curleft += obj.attr('offsetLeft');
-				curtop += obj.attr('offsetTop');
+                var offset = obj.position();
+				curleft += offset.left;
+				curtop += offset.top;
 				obj = obj.offsetParent();
-			} while ( obj.attr('tagName') != 'BODY' );
+			} while (obj[0].tagName.toLowerCase() !== 'body');
 
 			return { x:curleft, y:curtop };
 			

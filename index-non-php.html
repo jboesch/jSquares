@@ -7,7 +7,7 @@
 <title>jSquares - An image collage like the ted.com homepage</title>
 	
 	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
-	<script type="text/javascript">google.load("jquery","1.3.2");</script>
+	<script type="text/javascript">google.load("jquery","1.6.1");</script>
 	
 	<!-- styles -->
 	<link rel="stylesheet" href="css/jsquares.css" type="text/css" media="all" />
