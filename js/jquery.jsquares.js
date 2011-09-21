@@ -2,17 +2,23 @@
  * jSquares for jQuery
  * http://boedesign.com/
  *
- * Copyright (c) 2009 Jordan Boesch
+ * Copyright (c) 2009-2011 Jordan Boesch
  * Dual licensed under the MIT and GPL licenses.
  *
- * Date: May 24, 2011
- * Version: 1.3
+ * Date: Sept 20, 2011
+ * Version: 1.4
  *
  */
 (function($) {
 	
-	/**
-	* Initialize and setup plugin 
+	// If the hoverIntent plugin is not included, tell them
+    if(typeof $.fn.hoverIntent !== 'function')
+    {
+        throw "You need to include jquery.hoverintent.min.js to use jSquares.";
+    }
+
+    /**
+	* Initialize and setup plugin
 	* @param {Object} options The set of options to pass to over-write the defaults
 	*/
 	$.fn.jsquares = $.fn.jSquares = function(options){
@@ -67,7 +73,6 @@
 		function _revealBinds(e, i, evt){
 			_caption(i);
 			_fadeInOutImage('in', options.fade_to, i);
-			
 		}
 		
 		/**
@@ -227,7 +232,7 @@
 		    return v;
 		    
 		};
-		
+
 		
 		// Run the process of revealing/hiding captions
 		return this.each(function() {
@@ -242,11 +247,10 @@
 			// Add hover action for each image 
 			$image.each(function(i){
 
-				$(this).hoverIntent(
-					function(evt){ _revealBinds(this, i, evt); }, 
-					function(evt){  }
-				);
-    			
+                $(this).hoverIntent(
+                    function(evt){ _revealBinds(this, i, evt); },
+                    function(evt){  }
+                );
 			});
     		
 		});
@@ -254,19 +258,4 @@
 		
 	};
 	
-})(jQuery);
-
-/**
-* hoverIntent r5 // 2007.03.27 // jQuery 1.1.2+
-* <http://cherne.net/brian/resources/jquery.hoverIntent.html>
-* 
-* @param  f  onMouseOver function || An object with configuration options
-* @param  g  onMouseOut function  || Nothing (use configuration options object)
-* @author    Brian Cherne <brian@cherne.net>
-*/
-if(typeof $.fn.hoverIntent != 'function'){
-(function($){$.fn.hoverIntent=function(f,g){var cfg={sensitivity:7,interval:100,timeout:0};cfg=$.extend(cfg,g?{over:f,out:g}:f);var cX,cY,pX,pY;var track=function(ev){cX=ev.pageX;cY=ev.pageY;};var compare=function(ev,ob){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);if((Math.abs(pX-cX)+Math.abs(pY-cY))<cfg.sensitivity){$(ob).unbind("mousemove",track);ob.hoverIntent_s=1;return cfg.over.apply(ob,[ev]);}else{pX=cX;pY=cY;ob.hoverIntent_t=setTimeout(function(){compare(ev,ob);},cfg.interval);}};var delay=function(ev,ob){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);ob.hoverIntent_s=0;return cfg.out.apply(ob,[ev]);};var handleHover=function(e){var p=(e.type=="mouseover"?e.fromElement:e.toElement)||e.relatedTarget;while(p&&p!=this){try{p=p.parentNode;}catch(e){p=this;}}if(p==this){return false;}var ev=jQuery.extend({},e);var ob=this;if(ob.hoverIntent_t){ob.hoverIntent_t=clearTimeout(ob.hoverIntent_t);}if(e.type=="mouseover"){pX=ev.pageX;pY=ev.pageY;$(ob).bind("mousemove",track);if(ob.hoverIntent_s!=1){ob.hoverIntent_t=setTimeout(function(){compare(ev,ob);},cfg.interval);}}else{$(ob).unbind("mousemove",track);if(ob.hoverIntent_s==1){ob.hoverIntent_t=setTimeout(function(){delay(ev,ob);},cfg.timeout);}}};return this.mouseover(handleHover).mouseout(handleHover);};})(jQuery);
-}
-                                                        
-
-
+})(jQuery);                                                  

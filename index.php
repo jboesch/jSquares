@@ -13,7 +13,8 @@
 	<link rel="stylesheet" href="css/jsquares.css" type="text/css" media="all" />
 	
 	<!-- js -->
-	<script src="js/jquery.jsquares.min.js" type="text/javascript"></script>
+    <script src="js/jquery.hoverintent.min.js" type="text/javascript"></script>
+	<script src="js/jquery.jsquares.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 
